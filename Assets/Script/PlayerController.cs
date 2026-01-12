@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rbody;
 
     public int speed = 10;
+    
 
     // Feild Variable
     private Vector2 moveInput;
@@ -29,5 +30,6 @@ public class PlayerController : MonoBehaviour
     {
         float velocityX = moveInput.x;
         rbody.linearVelocity = new Vector2(velocityX * speed, rbody.linearVelocity.y);
+
     }
 }
