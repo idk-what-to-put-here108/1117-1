@@ -18,13 +18,49 @@ public class PlayerStats
         {
             if (value > 20)
             {
-                moveSpeed = 20;
+                moveSpeed = 5;
+            }
+            else if (value < 0 )
+            {
+                moveSpeed = 5;
             }
             else
             {
                 moveSpeed = value;
             }
-            moveSpeed = value;
         }
+    }
+
+    public  int MaxHealth
+    {
+        get { return maxHealth; }
+        set { maxHealth = value; }
+    }
+
+    public int CurrentHealth
+    {
+        get { return currentHealth; }
+        set 
+        {
+            currentHealth = Mathf.Clamp(value, 0, 100);
+            Debug.Log($"Health set to : {currentHealth}");
+            //currentHealth = value; 
+        }
+    }
+
+    public PlayerStats()
+    {
+        moveSpeed = 5;
+        maxHealth = 100;
+        currentHealth = 100;
+    }
+
+    public PlayerStats(float moveSpeed, int maxHealth)
+    {
+        this.moveSpeed = moveSpeed;
+        this.maxHealth = maxHealth;
+        currentHealth = maxHealth;
+
+        Debug.Log($"Player initialized with moveSpeed = {moveSpeed}, MaxHealth = {maxHealth}, CurrentHealth = {currentHealth}");
     }
 }

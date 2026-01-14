@@ -5,12 +5,12 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Initial Player Stats")]
     // initial player stats
-    [SerializeField] private float initialSpeed = 5;
-
+    [SerializeField] private float initialSpeed = 1;
+    [SerializeField] private int initalHealth = 100;
 
     //private fields
     private PlayerStats stats;
-    
+    private Vector2 moveInput;
 
     // Components
     private Rigidbody2D rbody;
@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     
 
     // Feild Variable
-    private Vector2 moveInput;
+    
     void Awake()
     {
         // Initialize
@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
 
         stats = new PlayerStats();
         stats.MoveSpeed = initialSpeed;
+        stats.MaxHealth = initalHealth;
+        stats.CurrentHealth = initalHealth;
 
     }
     void OnMove(InputValue value)
@@ -40,10 +42,17 @@ public class PlayerController : MonoBehaviour
         ApplyMovement();
     }
 
-    void ApplyMovement()
+    private void ApplyMovement()
     {
         float velocityX = moveInput.x * stats.MoveSpeed;
         rbody.linearVelocity = new Vector2(velocityX * speed, rbody.linearVelocity.y);
 
+    }
+
+    public void TakeDamage(int damageAmount)
+    {
+        stats.CurrentHealth -= damageAmount;
+        //stats.CurrentHealth = stats.CurrentHealth - damageAmount
+        Debug.Log("Took Damage");
     }
 }
