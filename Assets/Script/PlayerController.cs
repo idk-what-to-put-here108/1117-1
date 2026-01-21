@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     public int speed = 1;
     
-
+    
     // Feild Variable
     
     void Awake()
@@ -45,8 +45,14 @@ public class PlayerController : MonoBehaviour
     private void ApplyMovement()
     {
         float velocityX = moveInput.x * stats.MoveSpeed;
-        rbody.linearVelocity = new Vector2(velocityX * speed, rbody.linearVelocity.y);
+        rbody.linearVelocity = new Vector2(velocityX * stats.MoveSpeed, rbody.linearVelocity.y);
 
+    }
+
+    void IsDead()
+    {
+
+        Debug.Log("Has Perished");
     }
 
     public void TakeDamage(int damageAmount)
@@ -54,5 +60,12 @@ public class PlayerController : MonoBehaviour
         stats.CurrentHealth -= damageAmount;
         //stats.CurrentHealth = stats.CurrentHealth - damageAmount
         Debug.Log("Took Damage");
+        if (stats.CurrentHealth == 0)
+        {
+            IsDead();
+
+        }
     }
+
+
 }

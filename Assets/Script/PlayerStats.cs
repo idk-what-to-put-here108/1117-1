@@ -18,7 +18,7 @@ public class PlayerStats
         {
             if (value > 20)
             {
-                moveSpeed = 5;
+                moveSpeed = 20;
             }
             else if (value < 0 )
             {
@@ -50,7 +50,7 @@ public class PlayerStats
 
     public PlayerStats()
     {
-        moveSpeed = 5;
+        moveSpeed = 10;
         maxHealth = 100;
         currentHealth = 100;
     }
