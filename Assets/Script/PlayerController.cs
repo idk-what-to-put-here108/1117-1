@@ -1,71 +1,68 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Character
 {
-    [Header("Initial Player Stats")]
-    // initial player stats
-    [SerializeField] private float initialSpeed = 1;
-    [SerializeField] private int initalHealth = 100;
+    [Header("Movement Settings")]
+    [SerializeField] private float jumpForce = 12f;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 0.2f;
 
-    //private fields
-    private PlayerStats stats;
-    private Vector2 moveInput;
+
 
     // Components
     private Rigidbody2D rbody;
-
-    public int speed = 1;
+    private PlayerInputHandler input;
+    private bool isGrounded;
     
     
     // Feild Variable
     
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         // Initialize
         rbody = GetComponent<Rigidbody2D>();
-
-        stats = new PlayerStats();
-        stats.MoveSpeed = initialSpeed;
-        stats.MaxHealth = initalHealth;
-        stats.CurrentHealth = initalHealth;
+        input = GetComponent<PlayerInputHandler>();
 
     }
-    void OnMove(InputValue value)
+
+    private void Update()
     {
-        moveInput = value.Get<Vector2>();
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
+
 
     void FixedUpdate()
     {
-        
-        ApplyMovement();
-    }
-
-    private void ApplyMovement()
-    {
-        float velocityX = moveInput.x * stats.MoveSpeed;
-        rbody.linearVelocity = new Vector2(velocityX * stats.MoveSpeed, rbody.linearVelocity.y);
-
-    }
-
-    void IsDead()
-    {
-
-        Debug.Log("Has Perished");
-    }
-
-    public void TakeDamage(int damageAmount)
-    {
-        stats.CurrentHealth -= damageAmount;
-        //stats.CurrentHealth = stats.CurrentHealth - damageAmount
-        Debug.Log("Took Damage");
-        if (stats.CurrentHealth == 0)
+        if (IsDead)
         {
-            IsDead();
+            return;
+        }
+        HandleMovement();
+        HandleJump();
+    }
 
+    private void HandleMovement()
+    {
+        float horizontalvelocity = input.MoveInput.x * MoveSpeed;
+
+        rbody.linearVelocity = new Vector2(horizontalvelocity, rbody.linearVelocity.y);
+    }
+
+    private void HandleJump()
+    {
+        if(input.JumpTriggered && isGrounded)
+        {
+            ApplyJumpForce();
         }
     }
 
+    private void ApplyJumpForce()
+    {
+        rbody.linearVelocity = new Vector2(rbody.linearVelocity.x, 0);
 
+        rbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
 }
