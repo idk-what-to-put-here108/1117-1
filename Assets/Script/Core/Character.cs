@@ -11,7 +11,7 @@ public class Character : MonoBehaviour
    
 
     private bool isDead = false;
-
+    protected Animator anim;
     //public props
     public float MoveSpeed
     {
@@ -31,6 +31,7 @@ public class Character : MonoBehaviour
 
     protected virtual void Awake()
     {
+        anim = GetComponent<Animator>();
         Debug.Log("Awake in Character.CS");
         currentHealth = maxHealth;
     }
